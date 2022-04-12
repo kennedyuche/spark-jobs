@@ -1,0 +1,37 @@
+---
+# YAML configuration files, 
+# enabling us to extract parameters that we use within our programs so that they can be separated.
+
+#----------------Bootstrap Servers-------------------------
+# list of host/port pairs to use for establishing the initial connection to the Kafka cluster. 
+# These servers are just used for the initial connection to discover the full cluster membership.
+bootstrap_servers : 
+  - localhost:9092
+
+
+#--------------------number_of_partitions-------------------
+# An array of number of partitions to be assigned to a topic, consumers are shared evenly across the partitions
+# Allows for linear scalability 
+num_partitions : 
+  - 3
+  # - 4
+  # - 6
+  # - 10
+  # - 12
+
+#-----------------Replication Factor-------------------------
+# An array of replications factor which defines the number of copies of a topic in a Kafka cluster
+replication_factor :
+  - 1
+  # - 2
+  # - 3
+
+#---------------------Kafka topics ---------------------------
+# List of Kafka topics
+#-------------------------------------------------------------
+topics :
+  - secedgartopic0
+  - secedgartopic1
+  - secedgartopic2
+  - secedgartopic3
+

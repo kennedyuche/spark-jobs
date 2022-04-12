@@ -1,0 +1,101 @@
+---
+# YAML configuration files, 
+# enabling us to extract parameters that we use within our programs so that they can be separated.
+
+#----------------Bootstrap Servers-------------------------
+# list of host/port pairs to use for establishing the initial connection to the Kafka cluster. 
+# These servers are just used for the initial connection to discover the full cluster membership.
+bootstrap_servers : 
+  - localhost:9092
+
+#---------------------------------------------------------
+#-------------------auto offset reset---------------------
+#---------------------------------------------------------
+# Using auto-commit gives "at least once” delivery: 
+# Kafka guarantees that no messages will be missed, but duplicates are possible.
+# earliest: automatically reset the offset to the earliest offset
+# latest: automatically reset the offset to the latest offset
+# none: throw exception to the consumer if no previous offset is found for the consumer’s group
+auto_offset_reset : 
+  - earliest
+
+
+#----------------consumer timeout--------------------------
+# The timeout used to detect client failures
+consumer_timeout_ms : 
+  - 1000
+
+#----------------------------------------------------------
+#----------------enable auto commit------------------------
+#----------------------------------------------------------
+# This parameter controls whether the consumer will commit offsets automatically, and defaults to true.
+# Set it to false if you prefer to control when offsets are committed, 
+# which is necessary to minimize duplicates and avoid missing data.
+# If you set enable.auto.commit to true, then you might also want 
+# to control how frequently offsets will be committed using auto.commit.interval.ms.
+# If true the consumer’s offset will be periodically committed in the background.
+enable_auto_commit:
+  - true
+
+# The frequency in milliseconds that the consumer offsets are 
+# auto-committed to Kafka if enable.auto.commit is set to true.
+auto_commit_interval_ms:
+  - 5000
+
+
+#----------------------key deserializer---------------------
+key_deserializer : 
+  - org.apache.kafka.common.serialization.StringDeserializer
+  # - lambda x:loads(x.decode('utf-8'))
+
+
+#--------------value deserializer----------------------------
+value_deserializer :
+  # - org.apache.kafka.common.serialization.StringDeserializer
+  - lambda x:loads(x.decode('utf-8'))
+
+# -----------------group id----------------------------------
+group_id: 
+  - consumergroup0
+
+#--------------------security-protocol-----------------------
+# Protocol used to communicate with brokers
+security_protocol :
+  - PLAINTEXT
+  # - SASL_SSL
+  # - SASL_PLAINTEXT
+  # - SSL
+
+#---------------------Kafka topics ---------------------------
+# list of Kafka topics
+#-------------------------------------------------------------
+topics :
+  - secedgartopic0
+  - secedgartopic1
+  - secedgartopic2
+  - secedgartopic3
+
+
+#--------------------fetch-min-bytes--------------------------
+# Minimum amount of data the server should return for a fetch request.
+#-------------------------------------------------------------
+fetch_min_bytes:
+  - 1
+
+#-------------------fetch-max-bytes----------------------------
+#Maximum amount of data the server should return for a fetch request.
+#--------------------------------------------------------------
+fetch_max_bytes:
+  - 52428800
+
+#---------------------ssl-check-hostname-----------------------
+#Flag to configure whether ssl handshake should verify that the certificate matches the brokers hostname
+#--------------------------------------------------------------
+ssl_check_hostname:
+  - True
+
+#-------------------metric-group-prefix------------------------
+#
+#--------------------------------------------------------------
+# metric_group_prefix:
+  # - consumer

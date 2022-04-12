@@ -1,0 +1,17 @@
+FROM gcr.io/datamechanics/spark:3.2.0-hadoop-3.3.1-java-11-scala-2.12-python-3.8-dm16
+
+USER root
+
+ENV PYSPARK_MAJOR_PYTHON_VERSION=3
+WORKDIR /opt/application/
+
+# USER ${spark_uid}
+
+COPY requirements.txt .
+RUN pip3 install -r requirements.txt
+
+COPY main.py .
+COPY sparkjob.py .
+COPY config.cfg.template .
+
+ENTRYPOINT [ "/opt/entrypoint.sh" ]

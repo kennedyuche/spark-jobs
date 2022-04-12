@@ -1,0 +1,56 @@
+---
+# YAML configuration files, 
+# enabling us to extract parameters that we use within our programs so that they can be separated.
+
+
+#----------------Bootstrap Servers-------------------------
+# list of host/port pairs to use for establishing the initial connection to the Kafka cluster. 
+# These servers are just used for the initial connection to discover the full cluster membership.
+bootstrap_servers : 
+  - localhost:9092
+
+#--------------value deserializer---------------------------
+# used to convert user-supplied message values to bytes.
+value_serializer :
+  # - org.apache.kafka.common.serialization.StringSerializer
+  - lambda x:dumps(x).encode('utf-8')
+
+#----------------------key deserializer---------------------
+# used to convert user-supplied keys to bytes If not None,called as f(key), should return bytes.
+key_serializer : 
+  # - org.apache.kafka.common.serialization.StringSerializer
+  # - lambda x:dumps(x).encode('utf-8')
+
+#---------------------acknowledgement------------------------
+# The number of acknowledgments the producer requires the leader 
+# to have received before considering a request complete.
+acks :
+  - 1
+
+# --------------------security_protocol (str)-----------------
+# Protocol used to communicate with brokers.
+security_protocol :
+  - PLAINTEXT
+  # - SSL
+  # - SASL_PLAINTEXT
+  # - SASL_SSL
+
+#---------------------Kafka topics ---------------------------
+# list of Kafka topics
+#-------------------------------------------------------------
+topics :
+  - secedgartopic0
+  - secedgartopic1
+  - secedgartopic2
+  - secedgartopic3
+
+#---------------------batch size------------------------------
+#-------------------------------------------------------------
+batch_size:
+  - 16384
+
+#---------------------ssl_check_hostname----------------------
+#-------------------------------------------------------------
+ssl_check_hostname :
+  - True
+
