@@ -66,14 +66,16 @@ if __name__ == "__main__":
     data = spark.createDataFrame(list(zip(cities, dates, population)), schema=schema)
 
     # write to delta-lake
-    # data.write.format("delta").save(f"abfss://{container_name}@{storage_account_name}.dfs.core.windows.net/{table_name}")
+    # data.write \
+    #           .format("delta") \
+    #           .save(f"abfss://{container_name}@{storage_account_name}.dfs.core.windows.net/{table_name}")
     # logger.info("Successfully written")
     # data.show(truncate=False)
 
     # Append the new-data to delta-table
     data.write \
         .format("delta") \
-        .mode("append")  \
+        .mode("overwrite")  \
         .save(f"abfss://{container_name}@{storage_account_name}.dfs.core.windows.net/{table_name}")
 
 

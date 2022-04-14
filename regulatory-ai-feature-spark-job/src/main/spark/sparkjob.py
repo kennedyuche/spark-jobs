@@ -22,6 +22,7 @@ logger.info("Get configuration files to create a connection to Azure Storage Gen
 config = configparser.ConfigParser()
 config.read('config.cfg.template', encoding='utf-8-sig')
 container_name       =  config['AZURE']['CONTAINER_NAME']
+sink_container_name  =  config['AZURE']['SINK_CONTAINER_NAME']
 storage_account_name =  config['AZURE']['STORAGE_ACCOUNT_NAME']
 account_access_key   =  config['AZURE']['ACCOUNT_ACCESS_KEY']
 
@@ -31,8 +32,8 @@ Azure_10k_filings_data = config['STORAGE']['AZURE_10K_FILINGS_DATA']
 
 logger.info("Delta table and storage data url")
 AZURE_10K_CSV_DATA = f"abfss://{container_name}@{storage_account_name}.dfs.core.windows.net/{Azure_10k_filings_data}"
-DELTA_TABLE        = f"abfss://{container_name}@{storage_account_name}.dfs.core.windows.net/{table_name}"
-    
+DELTA_TABLE        = f"abfss://{sink_container_name}@{storage_account_name}.dfs.core.windows.net/{table_name}"
+
     
 # load data from Azure Gen2
 def session(spark):
@@ -47,10 +48,10 @@ def session(spark):
     """
     logger.info("predefined schema of StrucType")
     docai_schema =  StructType(
-                        [StructField("cik_number", LongType(), True),
+                        [StructField("CIK", LongType(), True),
                         StructField("company_name", StringType(), True),
-                        StructField("form_id", StringType(), True),
-                        StructField("date", DateType(), True),
+                        StructField("Items", StringType(), True),
+                        StructField("Item Contents", StringType(), True),
                         StructField("file_url", StringType(), True)
                         ])
     
@@ -64,12 +65,12 @@ def session(spark):
                       .load(AZURE_10K_CSV_DATA)
     
     # If there is a need to specify the schema
-    df_filings = spark.read \
-                      .format("csv") \
-                      .option("header", "true") \
-                      .schema(docai_schema) \
-                      .option("nullValue", "null") \
-                      .load(AZURE_10K_CSV_DATA)
+    # df_filings = spark.read \
+    #                   .format("csv") \
+    #                   .option("header", "true") \
+    #                   .schema(docai_schema) \
+    #                   .option("nullValue", "null") \
+    #                   .load(AZURE_10K_CSV_DATA)
                       
                       
     df_filings.show(15)
@@ -83,15 +84,23 @@ def session(spark):
     # Clear any previous runs
     logger.info("clearing any previous runs")
     shutil.rmtree(DELTA_TABLE, ignore_errors=True)
+    
+    # write to delta-lake
+    # df_filings.write \
+    #             .format("delta") \
+    #             .save(DELTA_TABLE)
+    # logger.info("Successfully written")
+    # df_filings.show(truncate=False)
                                          
-    logger.info("Atomically append new data to an existing Delta table")
-    logger.info(f"Updating/Appending data to the delta table : {table_name}")
+    logger.info("Atomically overwrite new data to an existing Delta table")
+    logger.info(f"Overwrite data to the delta table : {table_name}")
     df_filings.write \
               .format("delta") \
-              .mode("append")  \
+              .mode("overwrite")  \
               .save(DELTA_TABLE)
+            #   .option("replaceWhere", "start_date >= '2017-01-01' AND end_date <= '2017-01-31'") \
     
-    logger.info(f"Data stored/appended to the Delta table {table_name}")
+    logger.info(f"Data stored to the Delta table {table_name}")
 
 
 def readTable(spark):

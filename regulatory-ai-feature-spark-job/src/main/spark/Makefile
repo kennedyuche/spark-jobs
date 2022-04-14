@@ -1,8 +1,8 @@
 image_name := sparkdocai
-image_tag := v3.2.0
+image_tag := v3.1.1
 
 push_name := docaispark
-push_tag :=  V3.2.1
+push_tag :=  V3.1.1
 registry_name := sillians
 
 # Build image and add a tag
@@ -13,12 +13,13 @@ build :
 
 # List docker images
 list :
-	sudo docker image ls
+	docker image ls
+	# sudo docker image ls
 
 # Run image in bash
 run :
 	echo "Running docker image..."
-	# local:///opt/application/main.py
+	# docker run -it ${image_name}:${image_tag}
 	docker run -it ${image_name}:${image_tag} /bin/bash
 
 tag :

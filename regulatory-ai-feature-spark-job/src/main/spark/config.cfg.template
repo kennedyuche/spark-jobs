@@ -1,24 +1,12 @@
-[MYAZURE]
-APPLICATION_CLIENT_ID = a79e8b39-dc62-4c66-8b36-9061aebe7cba
-OBJECT_ID             = cb4996fd-8f2a-49f2-b7b5-7bb30bdd5dd7
-DIRECTORY_TENANT_ID   = 4e475163-bb40-4d23-9ac2-a085d1a77c4c
-STORAGE_ACCOUNT_NAME  = silliansdocai
-RESOURCE_GROUP        = docai-resources
-PRIMARY_DOMAIN        = basilihuomahamoye.onmicrosoft.com
-PASSWORD_OF_THE_PRINCIPAL = M7r1.Q8icIFPQR3gpkitChx7Bo~W3pbVI_
-CONTAINER_NAME            = docai-container
-ACCOUNT_ACCESS_KEY = sCYyqgpmt+oxr8I5JkZkJMqxHwIboQIOR4Ew8AO95U8bhbEDM1kldLtdCJtcQStkr5M5xrqK2suHkvdtWLKrPA==
-connection_string  = DefaultEndpointsProtocol=https;
-                    AccountName=silliansdocai;
-                    AccountKey=sCYyqgpmt+oxr8I5JkZkJMqxHwIboQIOR4Ew8AO95U8bhbEDM1kldLtdCJtcQStkr5M5xrqK2suHkvdtWLKrPA==;
-                    EndpointSuffix=core.windows.net
-
-# Sophia's account
+# Specify your credentials accordingly
 [AZURE]
-CONTAINER_NAME = edgarstore
-STORAGE_ACCOUNT_NAME = mycontainer
-ACCOUNT_ACCESS_KEY =  JFxsduffUYlkljXKpaG44slGM6sBXSB+axCnOTNr8j5cQqEqFd9esbbtKQXP9EsHQVknQNPKND8a+AStjIuJmA==
+CONTAINER_NAME = spark-job-dev
+SINK_CONTAINER_NAME = spark-data-sink
+STORAGE_ACCOUNT_NAME = nlpsparkdev
+ACCOUNT_ACCESS_KEY =  1A0GxnV86EJFd5YB4B1oXww3Fg+pTp34TOl0Z9q40qWzWNNS25xQjn4L5uwSvyTlYHWf2DtVdQFyDWUxIf4AVw==
 
+
+# specify the table name and file name accordingly
 [STORAGE]
 TABLE_NAME             = docai-delta-table
-AZURE_10K_FILINGS_DATA = 2020_10-K_Filings.csv
+AZURE_10K_FILINGS_DATA = 10k_sample.csv
