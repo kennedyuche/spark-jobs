@@ -3,7 +3,7 @@
 CONTAINER_NAME = spark-job-dev
 SINK_CONTAINER_NAME = spark-data-sink
 STORAGE_ACCOUNT_NAME = nlpsparkdev
-ACCOUNT_ACCESS_KEY =  1A0GxnV86EJFd5YB4B1oXww3Fg+pTp34TOl0Z9q40qWzWNNS25xQjn4L5uwSvyTlYHWf2DtVdQFyDWUxIf4AVw==
+ACCOUNT_ACCESS_KEY =  XXXX
 
 
 # specify the table name and file name accordingly
