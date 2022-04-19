@@ -16,4 +16,6 @@ COPY main.py .
 COPY sparkjob.py .
 COPY config.cfg.template .
 
-ENTRYPOINT [ "/opt/entrypoint.sh" ]
+RUN python3 sparkjob.py 
+
+#ENTRYPOINT [ "/opt/entrypoint.sh" ]

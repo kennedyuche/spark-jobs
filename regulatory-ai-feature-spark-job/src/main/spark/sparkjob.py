@@ -31,8 +31,10 @@ table_name             = config['STORAGE']['TABLE_NAME']
 Azure_10k_filings_data = config['STORAGE']['AZURE_10K_FILINGS_DATA']
 
 logger.info("Delta table and storage data url")
-AZURE_10K_CSV_DATA = f"abfss://{container_name}@{storage_account_name}.dfs.core.windows.net/{Azure_10k_filings_data}"
+#AZURE_10K_CSV_DATA = f"abfss://{container_name}@{storage_account_name}.dfs.core.windows.net/{Azure_10k_filings_data}"
+AZURE_10K_CSV_DATA = f"abfss://{container_name}@{storage_account_name}.dfs.core.windows.net/*.csv"
 DELTA_TABLE        = f"abfss://{sink_container_name}@{storage_account_name}.dfs.core.windows.net/{table_name}"
+
 
     
 # load data from Azure Gen2
@@ -54,23 +56,27 @@ def session(spark):
                         StructField("Item Contents", StringType(), True),
                         StructField("file_url", StringType(), True)
                         ])
-    
+   
+
     logger.info("read csv dataframe from Azure")
-    logger.info(f"reading {Azure_10k_filings_data} filings data from azure storage : {storage_account_name}")
+#   logger.info(f"reading {Azure_10k_filings_data} filings data from azure storage : {storage_account_name}")
+    logger.info(f"reading the filings data from azure storage : {storage_account_name}")
+
     df_filings = spark.read \
                       .format("csv") \
                       .option("header", "true") \
                       .option("inferSchema", "true") \
                       .option("nullValue", "null") \
                       .load(AZURE_10K_CSV_DATA)
+
     
     # If there is a need to specify the schema
-    # df_filings = spark.read \
-    #                   .format("csv") \
-    #                   .option("header", "true") \
-    #                   .schema(docai_schema) \
-    #                   .option("nullValue", "null") \
-    #                   .load(AZURE_10K_CSV_DATA)
+#    df_filings = spark.read \
+#                       .format("csv") \
+#                       .option("header", "true") \
+#                       .schema(docai_schema) \
+#                       .load(AZURE_10K_CSV_DATA)
+                       # .option("nullValue", "null")
                       
                       
     df_filings.show(15)
@@ -98,7 +104,7 @@ def session(spark):
               .format("delta") \
               .mode("overwrite")  \
               .save(DELTA_TABLE)
-            #   .option("replaceWhere", "start_date >= '2017-01-01' AND end_date <= '2017-01-31'") \
+             #.option("replaceWhere", "start_date >= '2017-01-01' AND end_date <= '2017-01-31'") \
     
     logger.info(f"Data stored to the Delta table {table_name}")
 

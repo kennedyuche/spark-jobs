@@ -25,7 +25,7 @@ spec:
   type: Python
   pythonVersion: "3"
   mode: cluster
-  image: "docaiacr.azurecr.io/sparkdocai:v3.2.0" 
+  image: "docaiacr.azurecr.io/sparkdocai:v3.1.1" 
   imagePullPolicy: Always
   mainApplicationFile: "local:///opt/application/sparkjob.py" # change to sparkjob.py
   sparkVersion: "3.1.1"
@@ -41,7 +41,7 @@ spec:
     memory: "512m"
     labels:
       version: 3.1.1
-    serviceAccount: spark
+    serviceAccount: sparkoperator
   executor:
     cores: 1
     instances: 2
